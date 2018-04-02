@@ -57,8 +57,13 @@ class ProfessorController extends Controller
     public function show($id)
     {
         $professor = Professor::find($id);
+        $idsCursos = array();
 
-        $cursos = Curso::whereNotIn('id',$professor->cursos)->get();
+        foreach ($professor->cursos as $curso) {
+          array_push($idsCursos, $curso->id);
+        }
+
+        $cursos = Curso::whereNotIn('id',$idsCursos)->get();
 
         return view('professor.show', ['professor' => $professor, 'cursos' => $cursos]);
     }

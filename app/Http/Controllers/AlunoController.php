@@ -57,9 +57,14 @@ class AlunoController extends Controller
     public function show($id)
     {
         $aluno = Aluno::find($id);
+
+        $idsCursos = array();
+
+        foreach ($aluno->cursos as $curso) {
+          array_push($idsCursos, $curso->professores_cursos_id);
+        }
         
-        $cursos = ProfessoresCursos::whereNotIn('id', $aluno->cursos)->get();
-        
+        $cursos = ProfessoresCursos::whereNotIn('id', $idsCursos)->get();
 
         return view('aluno.show', ['aluno' => $aluno, 'cursos' => $cursos]);
     }

@@ -28,11 +28,11 @@
 			<td>{{ $aluno->nome }}</td>
 			<td>{{ $aluno->data_nascimento }}</td>
 			<td>
-				<form method="post" action="{{ route('aluno.destroy', ['id' => $aluno->id_aluno]) }}">
+				<form method="post" action="{{ route('aluno.destroy', ['id' => $aluno->id]) }}">
 					{{ csrf_field() }}
 					<a class="btn btn-info" href="{{ route('aluno.show', ['id' => $aluno->id]) }}">Detalhes</a>
 					<input type="hidden" name="_method" value="delete">
-					<a href="{{ route('aluno.edit', ['id' => $aluno->id_aluno]) }}" class="btn btn-warning">Alterar</a>
+					<a href="{{ route('aluno.edit', ['id' => $aluno->id]) }}" class="btn btn-warning">Alterar</a>
 					<button class="btn btn-danger">Excluir</button>
 				</form>
 			</td>

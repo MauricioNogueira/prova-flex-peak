@@ -23,7 +23,7 @@
 			<tbody>
 				<?php foreach($alunos as $aluno): ?>
 				<tr>
-					<td rowspan="3"><strong>ID: </strong><?= $aluno->id_aluno ?></td>
+					<td rowspan="3"><strong>ID: </strong><?= $aluno->id ?></td>
 					<td colspan="2"><strong>Nome:</strong> <?= $aluno->nome ?></td>
 					<td><strong>Data de nascimento: </strong><?= $aluno->data_nascimento ?></td>
 				</tr>

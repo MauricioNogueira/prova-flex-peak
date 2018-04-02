@@ -4,7 +4,7 @@
 <h2 align="center">Alterar Aluno</h2>
 
 <section class="container">
-	<form method="post" action="{{ route('aluno.update', ['id' => $aluno->id_aluno]) }}">
+	<form method="post" action="{{ route('aluno.update', ['id' => $aluno->id]) }}">
 		<input type="hidden" name="_method" value="PUT">
 		{{ csrf_field() }}
 			<div class="row">

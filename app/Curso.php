@@ -11,4 +11,8 @@ class Curso extends Model
     public $fillable = [
     	'nome'
     ];
+
+    public function professores(){
+    	return $this->belongsToMany('App\Professor');
+    }
 }
