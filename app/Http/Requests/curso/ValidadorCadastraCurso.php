@@ -24,7 +24,7 @@ class ValidadorCadastraCurso extends FormRequest
     public function rules()
     {
         return [
-            'nome_curso' => 'bail|required|unique:cursos'
+            'nome' => 'bail|required|unique:cursos'
         ];
     }
 

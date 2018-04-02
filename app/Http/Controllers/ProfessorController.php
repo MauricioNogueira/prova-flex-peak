@@ -4,56 +4,125 @@ namespace App\Http\Controllers;
 
 use PDF;
 use App\Professor;
-use Illuminate\Http\Request;
+use App\Curso;
+use App\ProfessoresCursos;
 use App\Http\Requests\professor\ValidadorAlteraProfessor;
 use App\Http\Requests\professor\ValidadorCadastraProfessor;
+use Illuminate\Http\Request;
 
 class ProfessorController extends Controller
 {
-    public function telaCadastrar(){
-    	return view('professor.cadastrar-professor');
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+      $professores = Professor::all();
+
+      return view('professor.index', ['professores' => $professores]);
     }
 
-    public function cadastrarProfessor(ValidadorCadastraProfessor $request){
-    	$professor = new Professor($request->all());
-    	$professor->data_criacao_professor = date('Y-m-d');
-    	$professor->save();
-
-    	return redirect(route('tela-cadastrar-professor'))->with(['salvo' => 1]);
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('professor.create');
     }
 
-    public function telaListar(){
-    	$professores = Professor::all();
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ValidadorCadastraProfessor $request)
+    {
+      $professor = new Professor($request->all());
+      $professor->save();
 
-    	return view('professor.listar-professores', ['professores' => $professores]);
+      return redirect()->route('professor.create')->with(['salvo' => 1]);
     }
 
-    public function telaAlterar($id){
-    	$professor = Professor::find($id);
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $professor = Professor::find($id);
 
-    	return view('professor.alterar-professor', ['professor' => $professor]);
+        $cursos = Curso::whereNotIn('id',$professor->cursos)->get();
+
+        return view('professor.show', ['professor' => $professor, 'cursos' => $cursos]);
     }
 
-    public function alterarProfessor(ValidadorAlteraProfessor $request, $id){
-    	$professor = Professor::find($id);
-    	$professor->nome_professor = $request->nome_professor;
-    	$professor->data_nascimento_professor = $request->data_nascimento_professor;
-    	$professor->save();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+      $professor = Professor::find($id);
 
-    	return redirect(route('listar-professores'))->with(['alterado' => 1]);
+      return view('professor.edit', ['professor' => $professor]);
     }
 
-    public function excluirProfessor($id){
-    	$professor = Professor::find($id);
-    	$professor->delete();
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ValidadorAlteraProfessor $request, $id)
+    {
 
-    	return redirect(route('listar-professores'))->with(['excluido' => 1]);
+      $professor = Professor::find($id);
+      $professor->nome = $request->nome;
+      $professor->data_nascimento = $request->data_nascimento;
+      $professor->save();
+
+      return redirect()->route('professor.index');
     }
 
-    public function gerarPdf(){
-    	$professores = Professor::all();
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+      $professor = Professor::find($id);
+      $professor->delete();
 
-    	$pdf = PDF::loadView('professor.pdf-professor', ['professores' => $professores]);
+      return redirect()->route('professor.index')->with(['excluido' => 1]);
+    }
+
+    public function pdf(){
+      $professores = Professor::all();
+
+    	$pdf = PDF::loadView('professor.pdf', ['professores' => $professores]);
     	return $pdf->stream();
+    }
+
+    public function associar(Request $request, $id){
+      // dd($request->all());
+      $professor = Professor::find($id);
+      $professores_cursos = new ProfessoresCursos();
+      $professores_cursos->curso_id = $request->curso_id;
+      $professores_cursos->professor_id = $id;
+      $professores_cursos->save();
+
+      return redirect()->route('professor.show', ['id' => $id])->with(['associado' => 1]);
     }
 }

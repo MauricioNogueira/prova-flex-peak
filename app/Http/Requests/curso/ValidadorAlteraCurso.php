@@ -24,7 +24,7 @@ class ValidadorAlteraCurso extends FormRequest
     public function rules()
     {
         return [
-           'nome_curso' => 'bail|required'
+           'nome' => 'bail|required'
         ];
     }
 

@@ -5,56 +5,106 @@ namespace App\Http\Controllers;
 use PDF;
 use App\Curso;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\curso\ValidadorAlteraCurso;
 use App\Http\Requests\curso\ValidadorCadastraCurso;
 
 class CursoController extends Controller
 {
-    public function telaCadastrar(){
-    	return view('curso.cadastrar-curso');
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $cursos = Curso::all();
+
+      	return view('curso.index', ['cursos' => $cursos]);
     }
 
-    public function cadastrar(ValidadorCadastraCurso $request){
-    	$curso = new Curso($request->all());
-    	$curso->data_criacao_curso = date('Y-m-d');
-    	$curso->save();
-
-    	return redirect(route('tela-cadastrar-curso'))->with(['salvo' => 1]);
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('curso.create');
     }
 
-    public function telaListarCurso(){
-    	$cursos = Curso::all();
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ValidadorCadastraCurso $request)
+    {
+      $curso = new Curso($request->all());  
+      $curso->save();
 
-    	return view('curso.listar-cursos', ['cursos' => $cursos]);
+      return redirect()->route('curso.create')->with(['salvo' => 1]);
     }
 
-    public function telaAlterar($id){
-    	$curso = Curso::find($id);
-
-    	return view('curso.alterar-curso', ['curso' => $curso]);
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
-    public function alterarCurso(ValidadorAlteraCurso $request, $id){
-    	$curso = Curso::find($id);
-    	$curso->nome_curso = $request->nome_curso;
-    	$curso->save();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+      $curso = Curso::find($id);
 
-    	return redirect(route('listar-cursos'))->with(['alterado' => 1]);
+      return view('curso.edit', ['curso' => $curso]);
     }
 
-    public function excluirCurso($id){
-    	$curso = Curso::find($id);
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ValidadorAlteraCurso $request, $id)
+    {
+      $curso = Curso::find($id);
+      $curso->nome = $request->nome;
+      $curso->save();
 
-    	$curso->delete();
-
-    	return redirect(route('listar-cursos'))->with(['excluir' => 1]);
+      return redirect()->route('curso.index')->with(['alterado' => 1]);
     }
 
-    public function gerarPdf(){
-    	$cursos = Curso::all();
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+      $curso = Curso::find($id);
 
-    	$pdf = PDF::loadView('curso.pdf-curso', ['cursos' => $cursos]);
+      $curso->delete();
+
+      return redirect()->route('curso.index')->with(['excluir' => 1]);
+    }
+
+    public function pdf(){
+      $cursos = Curso::all();
+
+    	$pdf = PDF::loadView('curso.pdf', ['cursos' => $cursos]);
 
     	return $pdf->stream();
     }

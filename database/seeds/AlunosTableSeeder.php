@@ -20,7 +20,8 @@ class AlunosTableSeeder extends Seeder
         	'cidade' => 'Manacapuru',
         	'estado' => 'Amazonas',
         	'cep' => '69401083',
-        	'data_criacao' => '2018-03-30'
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
 }

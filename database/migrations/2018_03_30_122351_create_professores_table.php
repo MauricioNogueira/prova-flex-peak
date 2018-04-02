@@ -14,10 +14,10 @@ class CreateProfessoresTable extends Migration
     public function up()
     {
         Schema::create('professores', function (Blueprint $table) {
-            $table->increments('id_professor');
-            $table->string('nome_professor')->unique();
-            $table->string('data_nascimento_professor');
-            $table->date('data_criacao_professor');
+            $table->increments('id');
+            $table->string('nome')->unique();
+            $table->string('data_nascimento');
+            $table->timestamps();
         });
     }
 

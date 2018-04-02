@@ -12,18 +12,21 @@ class CursosTableSeeder extends Seeder
     public function run()
     {
         DB::table('cursos')->insert([
-        	'nome_curso' => 'Linguagem de Programação I',
-        	'data_criacao_curso' => date('Y-m-d')
+        	'nome' => 'Engenharia de Software',
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s')
         ]);
 
         DB::table('cursos')->insert([
-        	'nome_curso' => 'Linguagem de Programação II',
-        	'data_criacao_curso' => date('Y-m-d')
+        	'nome' => 'Ciência da Computação',
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s')
         ]);
 
         DB::table('cursos')->insert([
-        	'nome_curso' => 'Cálculo I',
-        	'data_criacao_curso' => date('Y-m-d')
+        	'nome' => 'Engenharia da Computação',
+          'created_at' => date('Y-m-d H:i:s'),
+          'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
 }

@@ -24,8 +24,8 @@ class ValidadorCadastraProfessor extends FormRequest
     public function rules()
     {
         return [
-            'nome_professor' => 'bail|required|unique:professores',
-            'data_nascimento_professor' => 'bail|required'
+            'nome' => 'bail|required|unique:professores',
+            'data_nascimento' => 'bail|required'
         ];
     }
 

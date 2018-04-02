@@ -24,8 +24,8 @@ class ValidadorAlteraProfessor extends FormRequest
     public function rules()
     {
         return [
-            'nome_professor' => 'bail|required',
-            'data_nascimento_professor' => 'bail|required'
+            'nome' => 'bail|required',
+            'data_nascimento' => 'bail|required'
         ];
     }
 
